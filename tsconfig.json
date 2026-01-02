@@ -22,7 +22,9 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/store/*": ["./src/integrations/store/*"],
+      "@/query/*": ["./src/integrations/tanstack-query/*"]
     }
   }
 }
