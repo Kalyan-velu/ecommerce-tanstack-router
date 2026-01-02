@@ -10,43 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as FavouritesIndexRouteImport } from './routes/favourites/index'
+import { Route as ProductIdIndexRouteImport } from './routes/$productId/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
+const FavouritesIndexRoute = FavouritesIndexRouteImport.update({
+  id: '/favourites/',
+  path: '/favourites/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductIdIndexRoute = ProductIdIndexRouteImport.update({
+  id: '/$productId/',
+  path: '/$productId/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/$productId': typeof ProductIdIndexRoute
+  '/favourites': typeof FavouritesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/$productId': typeof ProductIdIndexRoute
+  '/favourites': typeof FavouritesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/$productId/': typeof ProductIdIndexRoute
+  '/favourites/': typeof FavouritesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/tanstack-query'
+  fullPaths: '/' | '/$productId' | '/favourites'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/demo/tanstack-query'
+  to: '/' | '/$productId' | '/favourites'
+  id: '__root__' | '/' | '/$productId/' | '/favourites/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  ProductIdIndexRoute: typeof ProductIdIndexRoute
+  FavouritesIndexRoute: typeof FavouritesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,11 +68,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
+    '/favourites/': {
+      id: '/favourites/'
+      path: '/favourites'
+      fullPath: '/favourites'
+      preLoaderRoute: typeof FavouritesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$productId/': {
+      id: '/$productId/'
+      path: '/$productId'
+      fullPath: '/$productId'
+      preLoaderRoute: typeof ProductIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -70,7 +87,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  ProductIdIndexRoute: ProductIdIndexRoute,
+  FavouritesIndexRoute: FavouritesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
