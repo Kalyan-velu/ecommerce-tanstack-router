@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AccessibilitySettings">
+    <option name="checkCanvasSvg" value="true" />
+    <option name="checkColorContrast" value="true" />
+    <option name="checkDataVisualization" value="true" />
+    <option name="checkDialogModal" value="true" />
+    <option name="checkFormLabels" value="true" />
+    <option name="checkHeadingHierarchy" value="true" />
+    <option name="checkImageAlt" value="true" />
+    <option name="checkKeyboardAccessibility" value="true" />
+    <option name="checkLandmarks" value="true" />
+    <option name="checkLanguageAttributes" value="true" />
+    <option name="checkLinkText" value="true" />
+    <option name="checkTimelineStepper" value="true" />
+    <option name="checkTooltipPopover" value="true" />
+    <option name="enableDataVisualizationChecks" value="true" />
+  </component>
+</project>
