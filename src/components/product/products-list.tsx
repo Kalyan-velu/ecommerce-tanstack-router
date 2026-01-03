@@ -1,5 +1,5 @@
 import {memo} from "react";
-import {ProductCard} from "@/components/product-card.tsx";
+import {ProductCard} from "@/components/product/product-card.tsx";
 import type {ProductInterface} from "@/types/product.type.ts";
 
 interface ProductsListProps {

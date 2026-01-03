@@ -3,7 +3,7 @@ import {HugeiconsIcon} from "@hugeicons/react";
 import {type FC, memo} from "react";
 import {Card, CardContent} from "@/components/ui/card.tsx";
 import type {ProductInterface} from "@/types/product.type.ts";
-import {Button} from "./ui/button";
+import {Button} from "../ui/button.tsx";
 
 interface ProductCardProps {
   product: ProductInterface;
