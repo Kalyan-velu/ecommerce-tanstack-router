@@ -1,7 +1,7 @@
-import {TanStackDevtools} from "@tanstack/react-devtools";
-import type {QueryClient} from "@tanstack/react-query";
-import {createRootRouteWithContext, Outlet} from "@tanstack/react-router";
-import {TanStackRouterDevtoolsPanel} from "@tanstack/react-router-devtools";
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import type { QueryClient } from "@tanstack/react-query";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import AppNavigation from "@/components/app-navigation";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 

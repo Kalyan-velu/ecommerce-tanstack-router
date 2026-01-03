@@ -1,12 +1,12 @@
-import {ShoppingCart01FreeIcons} from "@hugeicons/core-free-icons";
-import {HugeiconsIcon} from "@hugeicons/react";
-import {createFileRoute, Link} from "@tanstack/react-router";
-import {memo, useState} from "react";
-import {ToggleFavourite} from "@/components/product/toggle-favourite.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {useSuspenseGetProductById} from "@/query/hooks/use-get-product-by-id.tsx";
-import {getProductByIdQueryOptions} from "@/query/options/production.options.ts";
-import {getContext} from "@/query/root-provider.tsx";
+import { ShoppingCart01FreeIcons } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { memo, useState } from "react";
+import { ToggleFavourite } from "@/components/product/toggle-favourite.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { useSuspenseGetProductById } from "@/query/hooks/use-get-product-by-id.tsx";
+import { getProductByIdQueryOptions } from "@/query/options/production.options.ts";
+import { getContext } from "@/query/root-provider.tsx";
 
 const queryClient = getContext().queryClient;
 

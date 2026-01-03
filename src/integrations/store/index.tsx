@@ -1,7 +1,7 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import {setupListeners} from "@reduxjs/toolkit/query";
-import {favoritesSlice} from "@/integrations/store/features/favorites.slice.ts";
-import {filtersSlice} from "@/store/features/filters.slice.ts";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { favoritesSlice } from "@/integrations/store/features/favorites.slice.ts";
+import { filtersSlice } from "@/store/features/filters.slice.ts";
 
 const rootReducer = combineReducers({
   [favoritesSlice.name]: favoritesSlice.reducer,

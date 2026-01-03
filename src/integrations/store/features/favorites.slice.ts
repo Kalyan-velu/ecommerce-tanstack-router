@@ -1,6 +1,10 @@
-import {createSelector, createSlice, type PayloadAction,} from "@reduxjs/toolkit";
-import type {RootState} from "@/store/index.tsx";
-import type {ProductInterface} from "@/types/product.type.ts";
+import {
+  createSelector,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
+import type { RootState } from "@/store/index.tsx";
+import type { ProductInterface } from "@/types/product.type.ts";
 
 interface FavoritesSliceInterface {
   favourites: ProductInterface[];

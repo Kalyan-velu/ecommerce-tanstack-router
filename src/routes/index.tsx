@@ -1,14 +1,20 @@
-import {createFileRoute} from "@tanstack/react-router";
-import {Activity, memo, useDeferredValue, useMemo} from "react";
-import {EmptyState} from "@/components/product/empty-state.tsx";
-import {ProductsList} from "@/components/product/products-list.tsx";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select.tsx";
-import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
-import {useSuspenseGetAllProducts} from "@/query/hooks/use-get-all-products.tsx";
-import {getProductsQueryOptions} from "@/query/options/production.options.ts";
-import {getContext} from "@/query/root-provider.tsx";
-import {categorySelected, sorted} from "@/store/features/filters.slice.ts";
-import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import { createFileRoute } from "@tanstack/react-router";
+import { Activity, memo, useDeferredValue, useMemo } from "react";
+import { EmptyState } from "@/components/product/empty-state.tsx";
+import { ProductsList } from "@/components/product/products-list.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
+import { useSuspenseGetAllProducts } from "@/query/hooks/use-get-all-products.tsx";
+import { getProductsQueryOptions } from "@/query/options/production.options.ts";
+import { getContext } from "@/query/root-provider.tsx";
+import { categorySelected, sorted } from "@/store/features/filters.slice.ts";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 const queryClient = getContext().queryClient;
 

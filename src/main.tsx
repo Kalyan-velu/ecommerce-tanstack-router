@@ -1,8 +1,8 @@
-import {createRouter, RouterProvider} from "@tanstack/react-router";
-import {StrictMode} from "react";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import * as TanStackQueryProvider from "./integrations/tanstack-query/root-provider.tsx";
-import {routeTree} from "./routeTree.gen";
+import { routeTree } from "./routeTree.gen";
 import "./styles.css";
 import reportWebVitals from "./reportWebVitals.ts";
 
