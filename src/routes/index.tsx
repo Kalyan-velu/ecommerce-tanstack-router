@@ -1,5 +1,6 @@
 import {createFileRoute} from "@tanstack/react-router";
-import {memo, useMemo} from "react";
+import {Activity, memo, useDeferredValue, useMemo} from "react";
+import {EmptyState} from "@/components/product/empty-state.tsx";
 import {ProductsList} from "@/components/product/products-list.tsx";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select.tsx";
 import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
@@ -16,11 +17,21 @@ export const Route = createFileRoute("/")({
   component: App,
 });
 
-function App() {
+// Exported for testing purposes
+export function App() {
   const { data } = useSuspenseGetAllProducts();
+
   const category = useAppSelector(({ filters }) => filters.category);
   const sorted = useAppSelector(({ filters }) => filters.sort);
+  const search = useAppSelector(({ filters }) => filters.search);
+
+  const deferredSearch = useDeferredValue(search);
   const products = data.data;
+
+  const hasFilters = useMemo(
+    () => category !== "all" || deferredSearch !== "" || sorted !== null,
+    [category, deferredSearch, sorted],
+  );
 
   const filteredProducts = useMemo(
     () =>
@@ -30,16 +41,26 @@ function App() {
             category === "all" ||
             product.category.toLowerCase().includes(category),
         )
+        .filter(
+          (product) =>
+            deferredSearch === "" ||
+            product.title
+              .toLowerCase()
+              .includes(deferredSearch.toLowerCase()) ||
+            product.description
+              .toLowerCase()
+              .includes(deferredSearch.toLowerCase()),
+        )
         .sort((a, b) =>
           sorted === "price-asc" ? a.price - b.price : b.price - a.price,
         ),
-    [products, category, sorted],
+    [products, category, sorted, deferredSearch],
   );
   const productCount = filteredProducts.length;
 
   return (
     <div className="text-center max-w-7xl w-full mx-auto">
-      <div className="mb-12">
+      <div className="my-12">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
           Discover Our Collection
         </h1>
@@ -47,7 +68,7 @@ function App() {
           Browse through our curated selection of premium products
         </p>
       </div>
-      <div className="flex items-center justify-center">
+      <div className="flex my-4 items-center justify-center">
         <CategoryFilterTabs category={category} />
       </div>
 
@@ -55,7 +76,12 @@ function App() {
         <p className="text-gray-600">{productCount} products</p>
         <Sort sortBy={sorted} />
       </div>
-      <ProductsList products={filteredProducts} />
+      <Activity mode={productCount === 0 ? "hidden" : "visible"}>
+        <ProductsList products={filteredProducts} />
+      </Activity>
+      <Activity mode={productCount !== 0 ? "hidden" : "visible"}>
+        <EmptyState hasFilters={hasFilters} />
+      </Activity>
     </div>
   );
 }

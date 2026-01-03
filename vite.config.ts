@@ -12,6 +12,7 @@ export default defineConfig({
     tanstackRouter({
       target: 'react',
       autoCodeSplitting: true,
+      routeFileIgnorePattern: '(__tests__|__mocks__|.*\\.test\\.tsx?|.*\\.spec\\.tsx?)$',
     }),
     viteReact(),
     tailwindcss(),

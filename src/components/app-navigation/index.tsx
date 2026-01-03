@@ -1,8 +1,12 @@
 import {FavouriteIcon, ShoppingCart01FreeIcons,} from "@hugeicons/core-free-icons";
 import {HugeiconsIcon} from "@hugeicons/react";
 import {Link} from "@tanstack/react-router";
-import {memo} from "react";
+import {type ChangeEvent, memo, useMemo} from "react";
 import {Button} from "@/components/ui/button.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {debounce} from "@/lib/utils.ts";
+import {searchChanged} from "@/store/features/filters.slice.ts";
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {Input} from "../ui/input";
 
 export default memo(function AppNavigation() {
@@ -13,10 +17,7 @@ export default memo(function AppNavigation() {
           FakeStore
         </Link>
 
-        <div className="flex-1 max-w-md mx-8">
-          <Input placeholder="Search products..." className="w-full" />
-        </div>
-
+        <SearchBar />
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon-lg">
             <HugeiconsIcon
@@ -28,6 +29,7 @@ export default memo(function AppNavigation() {
             variant="ghost"
             data-testid={"favourite-button"}
             size="icon-lg"
+            render={<Link to="/favourites" />}
           >
             <HugeiconsIcon icon={FavouriteIcon} className={"size-6"} />
           </Button>
@@ -36,3 +38,33 @@ export default memo(function AppNavigation() {
     </header>
   );
 });
+
+const SearchBar = memo(() => {
+  const dispatch = useAppDispatch();
+  const searchTerm = useAppSelector(({ filters }) => filters.search);
+
+  const debounceSearch = useMemo(
+    () =>
+      debounce((value: string) => {
+        dispatch(searchChanged(value));
+      }, 50),
+    [dispatch],
+  );
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    debounceSearch(e.target.value);
+  };
+
+  return (
+    <Label className="flex-1 max-w-md mx-8">
+      <span className={"sr-only"}>Search Products</span>
+      <Input
+        placeholder="Search products..."
+        className="w-full"
+        value={searchTerm}
+        onChange={handleChange}
+      />
+    </Label>
+  );
+});
+SearchBar.displayName = "SearchBar";

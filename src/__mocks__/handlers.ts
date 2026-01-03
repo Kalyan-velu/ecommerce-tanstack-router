@@ -1,35 +1,12 @@
 import {http, HttpResponse} from "msw";
 import {baseApiUrl} from "@/query/base-query.ts";
+import {mockProducts} from "@/__mocks__/mock-product.ts";
 
 export const handlers = [
   http.get(`${baseApiUrl}/products`, () => {
-    return HttpResponse.json([
-      {
-        id: 0,
-        title: "string",
-        price: 0.1,
-        description: "string",
-        category: "string",
-        image: "http://example.com",
-      },
-      {
-        id: 1,
-        title: "string",
-        price: 0.1,
-        description: "string",
-        category: "string",
-        image: "http://example.com",
-      },
-    ]);
+    return HttpResponse.json(mockProducts);
   }),
   http.get(`${baseApiUrl}/products/1`, () =>
-    HttpResponse.json({
-      id: 1,
-      title: "string",
-      price: 0.1,
-      description: "string",
-      category: "string",
-      image: "http://example.com",
-    }),
+    HttpResponse.json(mockProducts[1]),
   ),
 ];

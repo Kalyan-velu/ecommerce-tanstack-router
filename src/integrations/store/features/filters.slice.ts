@@ -2,7 +2,6 @@ import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
 interface FiltersState {
   category: string;
-  price: number[];
   sort: (string & {}) | "price-asc" | "price-desc" | "default" | null;
   search: string;
 }
@@ -31,10 +30,11 @@ export const filtersSlice = createSlice({
     },
     resetByAttribute: (
       state,
-      action: PayloadAction<("category" | "price" | "sort" | "search")[]>,
+      action: PayloadAction<("category" | "sort" | "search")[]>,
     ) => {
       const attribute = action.payload;
       for (const attr of attribute) {
+        // @ts-expect-error - TS doesn't know that attr is a key of FiltersState'
         state[attr] = initialState[attr];
       }
     },

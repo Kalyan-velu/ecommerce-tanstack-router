@@ -1,3 +1,4 @@
+import {combineReducers, configureStore, type PreloadedStateShapeFromReducersMapObject} from "@reduxjs/toolkit";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {
   type AnyRouter,
@@ -8,7 +9,30 @@ import {
   RouterProvider,
 } from "@tanstack/react-router";
 import {render as rtlRender, type RenderOptions,} from "@testing-library/react";
-import type {ReactElement} from "react";
+import React, {type ReactElement} from "react";
+import {Provider} from "react-redux";
+import {favoritesSlice} from "@/integrations/store/features/favorites.slice.ts";
+import {filtersSlice} from "@/store/features/filters.slice.ts";
+
+/* -------------------------------------------------------------------------- */
+/*                               Redux Store Factory                          */
+/* -------------------------------------------------------------------------- */
+
+const rootReducer = combineReducers({
+  [favoritesSlice.name]: favoritesSlice.reducer,
+  [filtersSlice.name]: filtersSlice.reducer,
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+export function createTestStore(preloadedState?: PreloadedStateShapeFromReducersMapObject<typeof rootReducer>) {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
+}
+
+export type TestStore = ReturnType<typeof createTestStore>;
 
 /* -------------------------------------------------------------------------- */
 /*                               Router Factory                               */
@@ -60,6 +84,9 @@ export interface CustomRenderOptions extends Omit<RenderOptions, "wrapper"> {
   initialRoute?: string;
   router?: AnyRouter;
   queryClient?: QueryClient;
+  preloadedState?: PreloadedStateShapeFromReducersMapObject<typeof rootReducer>;
+  store?: TestStore;
+  withRouter?: boolean;
 }
 
 function render(
@@ -68,27 +95,13 @@ function render(
     initialRoute = "/",
     router: customRouter,
     queryClient: customQueryClient,
+    preloadedState,
+    store: customStore,
+    withRouter = false,
     ...renderOptions
   }: CustomRenderOptions = {},
 ) {
-  // Case 1: No router provided → create isolated test router
-  if (!customRouter) {
-    const { router, queryClient } = createTestRouter(ui, initialRoute);
-
-    const Wrapper = () => (
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    );
-
-    return {
-      ...rtlRender(<></>, { wrapper: Wrapper, ...renderOptions }),
-      router,
-      queryClient,
-    };
-  }
-
-  // Case 2: External router provided
+  const store = customStore ?? createTestStore(preloadedState);
   const queryClient =
     customQueryClient ??
     new QueryClient({
@@ -101,16 +114,57 @@ function render(
       },
     });
 
+  // Case 1: Simple render without router (for unit testing components)
+  if (!withRouter && !customRouter) {
+    const Wrapper = ({ children }: { children: React.ReactNode }) => (
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    return {
+      ...rtlRender(ui, { wrapper: Wrapper, ...renderOptions }),
+      store,
+      queryClient,
+    };
+  }
+
+  // Case 2: Render with router
+  if (!customRouter) {
+    const { router, queryClient: routerQueryClient } = createTestRouter(ui, initialRoute);
+
+    const Wrapper = () => (
+      <Provider store={store}>
+        <QueryClientProvider client={routerQueryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    return {
+      ...rtlRender(<></>, { wrapper: Wrapper, ...renderOptions }),
+      router,
+      queryClient: routerQueryClient,
+      store,
+    };
+  }
+
+  // Case 3: External router provided
   const Wrapper = () => (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={customRouter} />
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={customRouter} />
+      </QueryClientProvider>
+    </Provider>
   );
 
   return {
     ...rtlRender(<></>, { wrapper: Wrapper, ...renderOptions }),
     router: customRouter,
     queryClient,
+    store,
   };
 }
 
