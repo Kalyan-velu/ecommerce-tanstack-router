@@ -1,26 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Activity, memo, useDeferredValue, useMemo } from "react";
+import { Activity, useDeferredValue, useMemo } from "react";
+import { CategoryFilterTabs } from "@/components/category-filter.tsx";
+import { AppLoading } from "@/components/loading/app-loading.tsx";
 import { EmptyState } from "@/components/product/empty-state.tsx";
 import { ProductsList } from "@/components/product/products-list.tsx";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select.tsx";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
+import { Sort } from "@/components/sort-by.tsx";
 import { useSuspenseGetAllProducts } from "@/query/hooks/use-get-all-products.tsx";
 import { getProductsQueryOptions } from "@/query/options/production.options.ts";
 import { getContext } from "@/query/root-provider.tsx";
-import { categorySelected, sorted } from "@/store/features/filters.slice.ts";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppSelector } from "@/store/hooks";
 
 const queryClient = getContext().queryClient;
 
 export const Route = createFileRoute("/")({
   loader: () => queryClient.ensureQueryData(getProductsQueryOptions),
   component: App,
+  pendingComponent: AppLoading,
 });
 
 // Exported for testing purposes
@@ -91,68 +86,3 @@ export function App() {
     </div>
   );
 }
-
-const labels: Record<
-  "price-asc" | "price-desc" | (string & {}),
-  string | null
-> = {
-  "price-asc": "Price: Low to High",
-  "price-desc": "Price: High to Low",
-  none: null,
-};
-
-const Sort = memo<{
-  sortBy: "price-asc" | "price-desc" | "none" | (string & {}) | null;
-}>(({ sortBy }) => {
-  const dispatch = useAppDispatch();
-  const handleChange = (value: string | null) => {
-    dispatch(sorted(value));
-  };
-
-  const memoized = useMemo(
-    () =>
-      Object.entries(labels).map(([value, label]) => (
-        <SelectItem key={value} value={value === "none" ? null : value}>
-          {label ?? "Default"}
-        </SelectItem>
-      )),
-    [],
-  );
-
-  return (
-    <div className="flex items-center gap-4">
-      <Select value={sortBy} onValueChange={handleChange}>
-        <SelectTrigger className="w-40">
-          <SelectValue>
-            {(value: (string & {}) | null) =>
-              value ? labels[value] : "Default"
-            }
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>{memoized}</SelectContent>
-      </Select>
-    </div>
-  );
-});
-
-const CategoryFilterTabs = memo<{
-  category: string;
-}>(({ category }) => {
-  const dispatch = useAppDispatch();
-
-  const handleChange = (value: string) => {
-    dispatch(categorySelected(value));
-  };
-
-  return (
-    <Tabs value={category} onValueChange={handleChange} className="w-fit">
-      <TabsList>
-        <TabsTrigger value="all">All</TabsTrigger>
-        <TabsTrigger value="electronics">Electronics</TabsTrigger>
-        <TabsTrigger value="clothing">Clothing</TabsTrigger>
-        <TabsTrigger value="jewelery">Jewelry</TabsTrigger>
-      </TabsList>
-    </Tabs>
-  );
-});
-CategoryFilterTabs.displayName = "CampaignsFilterTabs";

@@ -1,12 +1,13 @@
-import { ShoppingCart01FreeIcons } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { memo, useState } from "react";
-import { ToggleFavourite } from "@/components/product/toggle-favourite.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { useSuspenseGetProductById } from "@/query/hooks/use-get-product-by-id.tsx";
-import { getProductByIdQueryOptions } from "@/query/options/production.options.ts";
-import { getContext } from "@/query/root-provider.tsx";
+import {ShoppingCart01FreeIcons} from "@hugeicons/core-free-icons";
+import {HugeiconsIcon} from "@hugeicons/react";
+import {createFileRoute, Link, useParams} from "@tanstack/react-router";
+import {Activity, memo, useState} from "react";
+import {ProductDetailsSkeleton} from "@/components/loading/product.route.tsx";
+import {ToggleFavourite} from "@/components/product/toggle-favourite.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {useSuspenseGetProductById} from "@/query/hooks/use-get-product-by-id.tsx";
+import {getProductByIdQueryOptions} from "@/query/options/production.options.ts";
+import {getContext} from "@/query/root-provider.tsx";
 
 const queryClient = getContext().queryClient;
 
@@ -14,21 +15,24 @@ export const Route = createFileRoute("/$productId/")({
   loader: ({ params }) =>
     queryClient.ensureQueryData(getProductByIdQueryOptions(params.productId)),
   component: ProductViewPage,
+  pendingComponent: ProductDetailsSkeleton,
 });
 
 const sizes = ["XS", "S", "M", "L", "XL"] as const;
 type Size = (typeof sizes)[number];
 
-function ProductViewPage() {
-  const { productId } = Route.useParams();
+export function ProductViewPage() {
+  const { productId } = useParams({
+    from:'/$productId/'
+  });
   const { data } = useSuspenseGetProductById(productId);
   const product = data.data;
-
+  
   const [selectedSize, setSelectedSize] = useState<Size>("M");
   const [selectedImage, setSelectedImage] = useState(0);
-
+  
   const images = Array.from({ length: 4 }, (_) => product.image);
-
+  
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <nav className="mb-8">
@@ -39,7 +43,7 @@ function ProductViewPage() {
           ← Back to Products
         </Link>
       </nav>
-
+      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         <div className="flex gap-4">
           <div className="flex flex-col gap-4">
@@ -62,7 +66,7 @@ function ProductViewPage() {
               </button>
             ))}
           </div>
-
+          
           <img
             src={images[selectedImage]}
             alt={product.title}
@@ -70,30 +74,30 @@ function ProductViewPage() {
           />
         </div>
         <div className="lg:pl-8">
-          <span className="inline-block bg-black/70 backdrop-blur-sm text-white text-sm font-medium px-3 py-1.5 rounded-full capitalize mb-4">
+          <span data-testid="product-category" className="inline-block bg-black/70 backdrop-blur-sm text-white text-sm font-medium px-3 py-1.5 rounded-full capitalize mb-4">
             {product.category}
           </span>
-
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          
+          <h1 data-testid="product-title" className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             {product.title}
           </h1>
-
-          <p className="text-gray-600 mb-6 leading-relaxed">
+          
+          <p data-testid="product-description" className="text-gray-600 mb-6 leading-relaxed">
             {product.description}
           </p>
-
-          <div className="flex items-center gap-4 mb-4">
-            <span className="text-3xl font-bold text-primary">
+          
+          <div data-testid="product-price-info" className="flex items-center gap-4 mb-4">
+            <span data-testid="product-price" className="text-3xl font-bold text-primary">
               ${product.price.toFixed(2)}
             </span>
-            <span className="text-lg text-gray-400 line-through">
+            <span data-testid="product-price-original" className="text-lg text-gray-400 line-through">
               ${(product.price * 1.2).toFixed(2)}
             </span>
             <span className="bg-green-100 text-green-700 text-sm font-medium px-2.5 py-1 rounded-full">
               Save 20%
             </span>
           </div>
-
+          
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
@@ -106,8 +110,8 @@ function ProductViewPage() {
               SKU: {product.id.toString().padStart(6, "0")}
             </span>
           </div>
-
-          <div className="mb-6">
+          
+          <div data-testid={"reviews-container"} className="mb-6">
             <h3 className="sr-only">Reviews</h3>
             <div className="flex items-center gap-3">
               <StarRating rating={4} />
@@ -121,38 +125,40 @@ function ProductViewPage() {
               </button>
             </div>
           </div>
-
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-gray-900">Size</h3>
-              <button
-                type={"button"}
-                className="text-sm text-gray-500 hover:text-primary transition-colors"
-              >
-                Size guide
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              {sizes.map((size) => (
+          
+          <Activity  mode={product.category.toLowerCase().includes("clothing") ? "visible" : "hidden"}>
+            <div data-testid={'sizes'} className="mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-gray-900">Size</h3>
                 <button
-                  key={size}
-                  type="button"
-                  onClick={() => setSelectedSize(size)}
-                  disabled={size === "S"}
-                  className={`w-12 h-12 rounded-xl font-medium transition-all duration-200 ${
-                    selectedSize === size
-                      ? "bg-primary text-white shadow-md"
-                      : size === "S"
-                        ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
+                  type={"button"}
+                  className="text-sm text-gray-500 hover:text-primary transition-colors"
                 >
-                  {size}
+                  Size guide
                 </button>
-              ))}
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {sizes.map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    onClick={() => setSelectedSize(size)}
+                    disabled={size === "S"}
+                    className={`w-12 h-12 rounded-xl font-medium transition-all duration-200 ${
+                      selectedSize === size
+                        ? "bg-primary text-white shadow-md"
+                        : size === "S"
+                          ? "bg-gray-100 text-gray-300 cursor-not-allowed"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-
+          </Activity>
+          
           <div className="flex items-center gap-4 mb-6">
             <Button size="lg" className="flex-1 rounded-xl text-lg py-6">
               <HugeiconsIcon
@@ -169,7 +175,7 @@ function ProductViewPage() {
               }}
             />
           </div>
-
+          
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-2xl mb-6">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
@@ -245,7 +251,7 @@ function ProductViewPage() {
             </div>
           </div>
         </div>
-
+        
         <div className="lg:col-span-2 mt-12 lg:mt-16">
           <div className="border-t border-gray-200 pt-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
@@ -254,7 +260,7 @@ function ProductViewPage() {
             <p className="text-gray-600 leading-relaxed mb-8 text-lg">
               {product.description}
             </p>
-
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -361,7 +367,7 @@ function ProductViewPage() {
                   </li>
                 </ul>
               </div>
-
+              
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <svg
@@ -412,7 +418,7 @@ function ProductViewPage() {
                 </div>
               </div>
             </div>
-
+            
             <div className="bg-linear-to-r from-primary/5 to-primary/10 rounded-2xl p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 Why Choose This Product?

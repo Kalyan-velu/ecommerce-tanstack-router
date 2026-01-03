@@ -1,7 +1,7 @@
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@/test-utils";
-import type { ProductInterface } from "@/types/product.type.ts";
+import {beforeEach, describe, expect, it, vi} from "vitest";
+import {render, screen, waitFor} from "@/test-utils";
+import {mockProducts} from "@/__mocks__/mock-product.ts";
 
 // Mock TanStack Router's Link component to avoid RouterProvider requirement
 vi.mock("@tanstack/react-router", async () => {
@@ -24,60 +24,15 @@ vi.mock("@tanstack/react-router", async () => {
   };
 });
 
-// Mock products with proper categories for testing filters
-const mockProductsWithCategories: ProductInterface[] = [
-  {
-    id: 1,
-    title: "Smartphone Pro",
-    price: 999.99,
-    description: "A high-end smartphone with amazing features",
-    category: "electronics",
-    image: "http://example.com/phone.jpg",
-  },
-  {
-    id: 2,
-    title: "Laptop Ultra",
-    price: 1499.99,
-    description: "Powerful laptop for professionals",
-    category: "electronics",
-    image: "http://example.com/laptop.jpg",
-  },
-  {
-    id: 3,
-    title: "Cotton T-Shirt",
-    price: 29.99,
-    description: "Comfortable cotton t-shirt",
-    category: "clothing",
-    image: "http://example.com/tshirt.jpg",
-  },
-  {
-    id: 4,
-    title: "Diamond Ring",
-    price: 2999.99,
-    description: "Beautiful diamond ring",
-    category: "jewelery",
-    image: "http://example.com/ring.jpg",
-  },
-  {
-    id: 5,
-    title: "Winter Jacket",
-    price: 149.99,
-    description: "Warm winter jacket for cold weather",
-    category: "clothing",
-    image: "http://example.com/jacket.jpg",
-  },
-];
-
-// Mock the useSuspenseGetAllProducts hook
 vi.mock("@/query/hooks/use-get-all-products.tsx", () => ({
   useSuspenseGetAllProducts: () => ({
     data: {
-      data: mockProductsWithCategories,
+      data: mockProducts,
     },
   }),
 }));
 
-// Mock the Activity component to simplify testing
+
 vi.mock("react", async () => {
   const actual = await vi.importActual("react");
   return {
@@ -96,8 +51,7 @@ vi.mock("react", async () => {
   };
 });
 
-// Import the App component after mocks are set up
-// Now we can test the actual App component directly since it's exported
+
 const { App } = await import("@/routes/index.tsx");
 describe("Index Route Page", () => {
   beforeEach(() => {

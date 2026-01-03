@@ -1,9 +1,5 @@
-import {
-  combineReducers,
-  configureStore,
-  type PreloadedStateShapeFromReducersMapObject,
-} from "@reduxjs/toolkit";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {combineReducers, configureStore, type PreloadedStateShapeFromReducersMapObject,} from "@reduxjs/toolkit";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {
   type AnyRouter,
   createMemoryHistory,
@@ -12,16 +8,13 @@ import {
   createRouter,
   RouterProvider,
 } from "@tanstack/react-router";
-import {
-  type RenderOptions,
-  render as rtlRender,
-} from "@testing-library/react";
+import {render as rtlRender, type RenderOptions,} from "@testing-library/react";
 
-import type { ReactElement, ReactNode } from "react";
+import type {ReactElement, ReactNode} from "react";
 
-import { Provider } from "react-redux";
-import { favoritesSlice } from "@/integrations/store/features/favorites.slice.ts";
-import { filtersSlice } from "@/store/features/filters.slice.ts";
+import {Provider} from "react-redux";
+import {favoritesSlice} from "@/integrations/store/features/favorites.slice.ts";
+import {filtersSlice} from "@/store/features/filters.slice.ts";
 
 /* -------------------------------------------------------------------------- */
 /*                               Redux Store Factory                          */
@@ -49,7 +42,7 @@ export type TestStore = ReturnType<typeof createTestStore>;
 /*                               Router Factory                               */
 /* -------------------------------------------------------------------------- */
 
-export function createTestRouter(ui: ReactElement, initialRoute: string = "/") {
+export function createTestRouter(ui: ReactElement|undefined, initialRoute: string = "/") {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -101,7 +94,7 @@ export interface CustomRenderOptions extends Omit<RenderOptions, "wrapper"> {
 }
 
 function render(
-  ui: ReactElement,
+  ui: ReactElement|undefined,
   {
     initialRoute = "/",
     router: customRouter,
@@ -142,7 +135,7 @@ function render(
     };
   }
 
-  // Case 2: Render with router
+  // Case 2: Render with router (for integration testing with router)
   if (!customRouter) {
     const { router, queryClient: routerQueryClient } = createTestRouter(
       ui,
@@ -165,7 +158,7 @@ function render(
     };
   }
 
-  // Case 3: External router provided
+  // Case 3: External router provided (for integration testing with external router)
   const Wrapper = () => (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
