@@ -33,6 +33,7 @@ export default memo(function AppNavigation() {
             data-testid={"favourite-button"}
             size="icon-lg"
             render={<Link to="/favourites" />}
+            nativeButton={false}
           >
             <HugeiconsIcon icon={FavouriteIcon} className={"size-6"} />
           </Button>

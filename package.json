@@ -13,9 +13,10 @@
     "test:e2e": "vitest run --config vitest.config.browser.ts --browser.headless",
     "test:e2e:ui": "vitest --config vitest.config.browser.ts",
     "test:coverage": "vitest run --coverage",
-    "format": "biome format",
-    "lint": "biome lint",
-    "check": "biome check"
+    "format": "biome format --write",
+    "lint": "biome lint --write",
+    "check": "biome check",
+    "biome:ci": "biome ci"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
