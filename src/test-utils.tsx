@@ -1,4 +1,4 @@
-import {combineReducers, configureStore, type PreloadedStateShapeFromReducersMapObject} from "@reduxjs/toolkit";
+import {combineReducers, configureStore, type PreloadedStateShapeFromReducersMapObject,} from "@reduxjs/toolkit";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {
   type AnyRouter,
@@ -8,8 +8,10 @@ import {
   createRouter,
   RouterProvider,
 } from "@tanstack/react-router";
-import {render as rtlRender, type RenderOptions,} from "@testing-library/react";
-import React, {type ReactElement} from "react";
+import {render as rtlRender, type RenderOptions} from "@testing-library/react";
+
+import type {ReactElement, ReactNode} from "react";
+
 import {Provider} from "react-redux";
 import {favoritesSlice} from "@/integrations/store/features/favorites.slice.ts";
 import {filtersSlice} from "@/store/features/filters.slice.ts";
@@ -25,7 +27,9 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-export function createTestStore(preloadedState?: PreloadedStateShapeFromReducersMapObject<typeof rootReducer>) {
+export function createTestStore(
+  preloadedState?: PreloadedStateShapeFromReducersMapObject<typeof rootReducer>,
+) {
   return configureStore({
     reducer: rootReducer,
     preloadedState,
@@ -116,7 +120,7 @@ function render(
 
   // Case 1: Simple render without router (for unit testing components)
   if (!withRouter && !customRouter) {
-    const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    const Wrapper = ({ children }: { children: ReactNode }) => (
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           {children}
@@ -133,7 +137,10 @@ function render(
 
   // Case 2: Render with router
   if (!customRouter) {
-    const { router, queryClient: routerQueryClient } = createTestRouter(ui, initialRoute);
+    const { router, queryClient: routerQueryClient } = createTestRouter(
+      ui,
+      initialRoute,
+    );
 
     const Wrapper = () => (
       <Provider store={store}>
@@ -144,7 +151,7 @@ function render(
     );
 
     return {
-      ...rtlRender(<></>, { wrapper: Wrapper, ...renderOptions }),
+      ...rtlRender(null, { wrapper: Wrapper, ...renderOptions }),
       router,
       queryClient: routerQueryClient,
       store,
@@ -161,7 +168,7 @@ function render(
   );
 
   return {
-    ...rtlRender(<></>, { wrapper: Wrapper, ...renderOptions }),
+    ...rtlRender(null, { wrapper: Wrapper, ...renderOptions }),
     router: customRouter,
     queryClient,
     store,

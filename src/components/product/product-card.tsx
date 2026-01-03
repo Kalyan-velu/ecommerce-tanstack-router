@@ -1,8 +1,8 @@
-import {Link} from "@tanstack/react-router";
-import {type FC, memo} from "react";
-import {ToggleFavourite} from "@/components/product/toggle-favourite.tsx";
-import {Card, CardContent} from "@/components/ui/card.tsx";
-import type {ProductInterface} from "@/types/product.type.ts";
+import { Link } from "@tanstack/react-router";
+import { type FC, memo } from "react";
+import { ToggleFavourite } from "@/components/product/toggle-favourite.tsx";
+import { Card, CardContent } from "@/components/ui/card.tsx";
+import type { ProductInterface } from "@/types/product.type.ts";
 
 interface ProductCardProps {
   product: ProductInterface;

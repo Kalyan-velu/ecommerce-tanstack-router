@@ -32,5 +32,27 @@
     "formatter": {
       "quoteStyle": "double"
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/src/components/ui/**/*"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useFocusableInteractive": "off",
+            "useSemanticElements": "off",
+            "useKeyWithClickEvents": "off",
+            "noLabelWithoutControl": "off",
+            "noRedundantRoles": "off"
+          },
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          },
+          "correctness": {
+            "noNestedComponentDefinitions": "off"
+          }
+        }
+      }
+    }
+  ]
 }

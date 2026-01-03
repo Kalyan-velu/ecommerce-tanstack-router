@@ -1,15 +1,25 @@
-import {beforeEach, describe, expect, it, vi} from "vitest";
-import {render, screen, waitFor} from "@/test-utils";
 import userEvent from "@testing-library/user-event";
-import type {ProductInterface} from "@/types/product.type.ts";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen, waitFor } from "@/test-utils";
+import type { ProductInterface } from "@/types/product.type.ts";
 
 // Mock TanStack Router's Link component to avoid RouterProvider requirement
 vi.mock("@tanstack/react-router", async () => {
   const actual = await vi.importActual("@tanstack/react-router");
   return {
     ...actual,
-    Link: ({ children, to, ...props }: { children: React.ReactNode; to: string; [key: string]: unknown }) => (
-      <a href={to} {...props}>{children}</a>
+    Link: ({
+      children,
+      to,
+      ...props
+    }: {
+      children: React.ReactNode;
+      to: string;
+      [key: string]: unknown;
+    }) => (
+      <a href={to} {...props}>
+        {children}
+      </a>
     ),
   };
 });
@@ -72,7 +82,13 @@ vi.mock("react", async () => {
   const actual = await vi.importActual("react");
   return {
     ...actual,
-    Activity: ({ children, mode }: { children: React.ReactNode; mode: string }) => (
+    Activity: ({
+      children,
+      mode,
+    }: {
+      children: React.ReactNode;
+      mode: string;
+    }) => (
       <div data-testid="activity" data-mode={mode}>
         {mode === "visible" ? children : null}
       </div>
@@ -98,7 +114,7 @@ describe("Index Route Page", () => {
       });
 
       expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-        "Discover Our Collection"
+        "Discover Our Collection",
       );
     });
 
@@ -111,7 +127,9 @@ describe("Index Route Page", () => {
       });
 
       expect(
-        screen.getByText("Browse through our curated selection of premium products")
+        screen.getByText(
+          "Browse through our curated selection of premium products",
+        ),
       ).toBeInTheDocument();
     });
   });
@@ -161,8 +179,12 @@ describe("Index Route Page", () => {
       });
 
       expect(screen.getByRole("tab", { name: /all/i })).toBeInTheDocument();
-      expect(screen.getByRole("tab", { name: /electronics/i })).toBeInTheDocument();
-      expect(screen.getByRole("tab", { name: /clothing/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole("tab", { name: /electronics/i }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("tab", { name: /clothing/i }),
+      ).toBeInTheDocument();
       expect(screen.getByRole("tab", { name: /jewelry/i })).toBeInTheDocument();
     });
 
@@ -223,11 +245,15 @@ describe("Index Route Page", () => {
 
       // Wait for dropdown to open and click option
       await waitFor(() => {
-        const lowToHighOption = screen.getByRole("option", { name: /low to high/i });
+        const lowToHighOption = screen.getByRole("option", {
+          name: /low to high/i,
+        });
         expect(lowToHighOption).toBeInTheDocument();
       });
 
-      const lowToHighOption = screen.getByRole("option", { name: /low to high/i });
+      const lowToHighOption = screen.getByRole("option", {
+        name: /low to high/i,
+      });
       await user.click(lowToHighOption);
 
       await waitFor(() => {
@@ -241,7 +267,11 @@ describe("Index Route Page", () => {
       render(<App />, {
         preloadedState: {
           favorites: { favourites: [] },
-          filters: { category: "all", sort: null, search: "nonexistentproduct123" },
+          filters: {
+            category: "all",
+            sort: null,
+            search: "nonexistentproduct123",
+          },
         },
       });
 

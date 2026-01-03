@@ -1,4 +1,4 @@
-import type {ProductInterface} from "@/types/product.type.ts";
+import type { ProductInterface } from "@/types/product.type.ts";
 
 export interface CartInterface {
   id: number;

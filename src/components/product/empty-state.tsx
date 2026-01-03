@@ -1,7 +1,7 @@
-import {memo} from "react";
-import {Button} from "@/components/ui/button";
-import {resetFilters} from "@/store/features/filters.slice";
-import {useAppDispatch} from "@/store/hooks";
+import { memo } from "react";
+import { Button } from "@/components/ui/button";
+import { resetFilters } from "@/store/features/filters.slice";
+import { useAppDispatch } from "@/store/hooks";
 
 interface EmptyStateProps {
   hasFilters: boolean;
@@ -15,7 +15,10 @@ export const EmptyState = memo<EmptyStateProps>(({ hasFilters }) => {
   };
 
   return (
-    <div data-testid="empty-state" className="flex flex-col items-center justify-center py-16 px-4">
+    <div
+      data-testid="empty-state"
+      className="flex flex-col items-center justify-center py-16 px-4"
+    >
       <div className="w-24 h-24 mb-6 rounded-full bg-gray-100 flex items-center justify-center">
         <svg
           className="w-12 h-12 text-gray-400"

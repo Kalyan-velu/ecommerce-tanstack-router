@@ -1,13 +1,16 @@
-import {FavouriteIcon, ShoppingCart01FreeIcons,} from "@hugeicons/core-free-icons";
-import {HugeiconsIcon} from "@hugeicons/react";
-import {Link} from "@tanstack/react-router";
-import {type ChangeEvent, memo, useMemo} from "react";
-import {Button} from "@/components/ui/button.tsx";
-import {Label} from "@/components/ui/label.tsx";
-import {debounce} from "@/lib/utils.ts";
-import {searchChanged} from "@/store/features/filters.slice.ts";
-import {useAppDispatch, useAppSelector} from "@/store/hooks";
-import {Input} from "../ui/input";
+import {
+  FavouriteIcon,
+  ShoppingCart01FreeIcons,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Link } from "@tanstack/react-router";
+import { type ChangeEvent, memo, useMemo } from "react";
+import { Button } from "@/components/ui/button.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { debounce } from "@/lib/utils.ts";
+import { searchChanged } from "@/store/features/filters.slice.ts";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { Input } from "../ui/input";
 
 export default memo(function AppNavigation() {
   return (
