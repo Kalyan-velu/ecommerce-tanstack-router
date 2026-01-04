@@ -1,13 +1,13 @@
 import {describe, expect, it} from "vitest";
 import {page} from "vitest/browser";
 import {mockProducts} from "@/__mocks__/mock-product.ts";
-import {App} from "@/routes";
+import {HomePage} from "@/routes";
 import {renderAct as renderApp} from "./e2e-test.utils.tsx";
 
 describe("Product Listing Page - E2E", () => {
   describe("Page Load", () => {
     it("should display the page title", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
       const heading = page.getByRole("heading", { level: 1 });
       await expect
         .element(heading)
@@ -15,7 +15,7 @@ describe("Product Listing Page - E2E", () => {
     });
 
     it("should display the page description", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
       const description = page.getByText(
         "Browse through our curated selection of premium products",
       );
@@ -25,13 +25,13 @@ describe("Product Listing Page - E2E", () => {
 
   describe("Product Display", () => {
     it("should display product cards", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
       const productCards = page.getByTestId("product-card");
       await expect.element(productCards.first()).toBeVisible();
     });
 
     it("should display correct product count", async () => {
-      const { getByTestId } = await renderApp(<App />);
+      const { getByTestId } = await renderApp(<HomePage />);
       const productCount = getByTestId("product-count");
       await expect.element(productCount).toBeVisible();
       await expect
@@ -42,7 +42,7 @@ describe("Product Listing Page - E2E", () => {
 
   describe("Category Filtering", () => {
     it("should display all category filter tabs", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
 
       const allTab = page.getByRole("tab", { name: /all/i });
       const electronicsTab = page.getByRole("tab", { name: /electronics/i });
@@ -56,13 +56,13 @@ describe("Product Listing Page - E2E", () => {
     });
 
     it("should have All tab selected by default", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
       const allTab = page.getByRole("tab", { name: /all/i });
       await expect.element(allTab).toHaveAttribute("aria-selected", "true");
     });
 
     it("should filter products when clicking electronics tab", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
       const electronicsTab = page.getByRole("tab", { name: /electronics/i });
       await electronicsTab.click();
 
@@ -77,7 +77,7 @@ describe("Product Listing Page - E2E", () => {
     });
 
     it("should filter products when clicking clothing tab", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
 
       const clothingTab = page.getByRole("tab", { name: /clothing/i });
       await clothingTab.click();
@@ -93,13 +93,13 @@ describe("Product Listing Page - E2E", () => {
 
   describe("Sorting Functionality", () => {
     it("should display sort dropdown", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
       const sortDropdownTrigger = page.getByTestId("sort-by-trigger");
       await expect.element(sortDropdownTrigger).toBeVisible();
     });
 
     it("should open sort dropdown when clicked", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
 
       const sortDropdownTrigger = page.getByTestId("sort-by-trigger");
       await sortDropdownTrigger.click();
@@ -108,7 +108,7 @@ describe("Product Listing Page - E2E", () => {
     });
 
     it("should sort products when selecting price low to high", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
 
       const sortDropdownTrigger = page.getByTestId("sort-by-trigger");
       await sortDropdownTrigger.click();
@@ -127,7 +127,7 @@ describe("Product Listing Page - E2E", () => {
 
   describe("Search Functionality", () => {
     it("should show empty state when no products match search", async () => {
-      const { store } = await renderApp(<App />, {
+      const { store } = await renderApp(<HomePage />, {
         preloadedState: {
           favorites: { favourites: [] },
           filters: {
@@ -151,7 +151,7 @@ describe("Product Listing Page - E2E", () => {
 
   describe("Favourites Functionality", () => {
     it("should add product to favourites when clicking favourite button", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
 
       // Find the first favourite toggle button
       const favouriteToggle = page
@@ -167,7 +167,7 @@ describe("Product Listing Page - E2E", () => {
     });
 
     it("should remove product from favourites when clicking again", async () => {
-      await renderApp(<App />);
+      await renderApp(<HomePage />);
 
       // Add to favourites first
       const addButton = page

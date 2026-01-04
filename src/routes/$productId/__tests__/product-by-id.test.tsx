@@ -1,88 +1,94 @@
+import {act} from "react";
 import {describe, expect, it} from "vitest";
 import {render} from "@/test-utils.tsx";
-import {act} from "react";
-
-type ArgumentsType<T> = T extends (...args: infer P) => any ? P : never;
-
+import type {ArgumentsType} from "@/types";
 
 const { ProductViewPage } = await import("@/routes/$productId/index.tsx");
 
-const renderPage=async(...args:Partial<ArgumentsType<typeof render>>)=> {
-  return act(()=>{
-      return render(args[0]??<ProductViewPage />,{
-        withRouter: true,
-        initialRoute: "/product/1",
-        ...(args[1]??{})
-      })
-    }
-  )
-}
+const renderPage = async (...args: Partial<ArgumentsType<typeof render>>) => {
+  return act(() => {
+    return render(args[0] ?? <ProductViewPage />, {
+      withRouter: true,
+      initialRoute: "/1/",
+      routePath: "/$productId/",
+      ...(args[1] ?? {}),
+    });
+  });
+};
 
 describe("Product View Page", () => {
-
   describe("Product Details", () => {
-    it("should render product details for electronics product",async () => {
-      const { getByTestId } = await renderPage();
+    it("should render product details for electronics product", async () => {
+      const { findByTestId } = await renderPage();
 
-      expect(getByTestId("product-category")).toBeInTheDocument();
-      expect(getByTestId("product-title")).toBeInTheDocument();
-      expect(getByTestId("product-description")).toBeInTheDocument();
-      expect(getByTestId("product-price")).toBeInTheDocument();
-      expect(getByTestId("product-price-original")).toBeInTheDocument();
-      expect(getByTestId("reviews-container")).toBeInTheDocument();
+      expect(await findByTestId("product-category")).toBeInTheDocument();
+      expect(await findByTestId("product-title")).toBeInTheDocument();
+      expect(await findByTestId("product-description")).toBeInTheDocument();
+      expect(await findByTestId("product-price")).toBeInTheDocument();
+      expect(await findByTestId("product-price-original")).toBeInTheDocument();
+      expect(await findByTestId("reviews-container")).toBeInTheDocument();
     });
 
-    it("should NOT show sizes section for non-clothing products", async() => {
-      const { queryByTestId } = await renderPage();
+    it("should NOT show sizes section for non-clothing products", async () => {
+      const { findByTestId, queryByTestId } = await renderPage();
+
+      // Wait for the page to load first
+      await findByTestId("product-category");
 
       // Sizes should not be visible for electronics
-      expect(queryByTestId("sizes")).not.toBeInTheDocument();
+      const sizes = queryByTestId("sizes");
+
+      expect(sizes).toHaveStyle({ display: "none" });
     });
 
-    it("should show sizes section for clothing products", async() => {
+    it("should show sizes section for clothing products", async () => {
       // Use clothing product (id: 3 - Winter Jacket, men's clothing)
-      const { getByTestId } = await renderPage(undefined,{
+      const { findByTestId } = await renderPage(undefined, {
         withRouter: true,
-        initialRoute: "/product/3"
+        initialRoute: "/3/",
       });
 
       // Sizes should be visible for clothing
-      expect(getByTestId("sizes")).toBeInTheDocument();
+      expect(await findByTestId("sizes")).toBeInTheDocument();
     });
 
     it("should display correct product category", async () => {
-      // mockUseParams.mockReturnValue({ productId: "1" });
-      const { getByTestId } = await renderPage(undefined,{
-        initialRoute: "/product/1"
+      const { findByTestId } = await renderPage(undefined, {
+        withRouter: true,
+        initialRoute: "/1/",
       });
 
-      expect(getByTestId("product-category")).toHaveTextContent("electronics");
+      expect(await findByTestId("product-category")).toHaveTextContent(
+        "electronics",
+      );
     });
 
-    it("should display correct product title", async() => {
-      const { getByTestId } = await renderPage(undefined,{
-        initialRoute: "/product/1"
+    it("should display correct product title", async () => {
+      const { findByTestId } = await renderPage(undefined, {
+        withRouter: true,
+        initialRoute: "/1/",
       });
 
-      expect(getByTestId("product-title")).toHaveTextContent(
+      expect(await findByTestId("product-title")).toHaveTextContent(
         "Smartphone Pro Max",
       );
     });
 
-    it("should display formatted price", async() => {
-      const { getByTestId } = await renderPage(undefined,{
-        initialRoute: "/product/1"
+    it("should display formatted price", async () => {
+      const { findByTestId } = await renderPage(undefined, {
+        withRouter: true,
+        initialRoute: "/1/",
       });
-      
-      expect(getByTestId("product-price")).toHaveTextContent("$999.99");
+
+      expect(await findByTestId("product-price")).toHaveTextContent("$999.99");
     });
   });
 
   describe("Back Navigation", () => {
-    it("should render back to products link", async() => {
-      const { getByRole } = await renderPage();
+    it("should render back to products link", async () => {
+      const { findByRole } = await renderPage();
 
-      const backLink = getByRole("link", { name: /back to products/i });
+      const backLink = await findByRole("link", { name: /back to products/i });
       expect(backLink).toBeInTheDocument();
       expect(backLink).toHaveAttribute("href", "/");
     });

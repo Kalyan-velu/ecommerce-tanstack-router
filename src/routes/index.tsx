@@ -14,12 +14,12 @@ const queryClient = getContext().queryClient;
 
 export const Route = createFileRoute("/")({
   loader: () => queryClient.ensureQueryData(getProductsQueryOptions),
-  component: App,
+  component: HomePage,
   pendingComponent: AppLoading,
 });
 
 // Exported for testing purposes
-export function App() {
+export function HomePage() {
   const { data } = useSuspenseGetAllProducts();
 
   const category = useAppSelector(({ filters }) => filters.category);
@@ -75,7 +75,7 @@ export function App() {
 
       <div className="flex items-center justify-between mb-6 px-2">
         <p data-testid={"product-count"} className="text-gray-600">
-          {productCount} products
+          {productCount} {productCount > 1 ? "products" : "product"}
         </p>
         <Sort sortBy={sorted} />
       </div>

@@ -38,7 +38,11 @@ export type TestStore = ReturnType<typeof createTestStore>;
 /*                               Router Factory                               */
 /* -------------------------------------------------------------------------- */
 
-export function createTestRouter(ui: ReactElement|undefined, initialRoute: string = "/") {
+export function createTestRouter(
+  ui: ReactElement | undefined,
+  initialRoute: string = "/",
+  routePath: string = "/",
+) {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -55,7 +59,7 @@ export function createTestRouter(ui: ReactElement|undefined, initialRoute: strin
 
   const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: "/",
+    path: routePath,
     component: () => ui,
   });
 
@@ -82,6 +86,7 @@ export function createTestRouter(ui: ReactElement|undefined, initialRoute: strin
 
 export interface CustomRenderOptions extends Omit<RenderOptions, "wrapper"> {
   initialRoute?: string;
+  routePath?: string;
   router?: AnyRouter;
   queryClient?: QueryClient;
   preloadedState?: PreloadedStateShapeFromReducersMapObject<typeof rootReducer>;
@@ -90,9 +95,10 @@ export interface CustomRenderOptions extends Omit<RenderOptions, "wrapper"> {
 }
 
 function render(
-  ui: ReactElement|undefined,
+  ui: ReactElement | undefined,
   {
     initialRoute = "/",
+    routePath = "/",
     router: customRouter,
     queryClient: customQueryClient,
     preloadedState,
@@ -136,6 +142,7 @@ function render(
     const { router, queryClient: routerQueryClient } = createTestRouter(
       ui,
       initialRoute,
+      routePath,
     );
 
     const Wrapper = () => (

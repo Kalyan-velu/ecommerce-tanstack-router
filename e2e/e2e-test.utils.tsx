@@ -12,6 +12,7 @@ import type {ArgumentsType} from "@/types";
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 type CustomRenderOptions = Omit<RenderOptions, "wrapper"> & {
   initialRoute?: string;
+  routePath?: string;
   router?: AnyRouter;
   queryClient?: QueryClient;
   preloadedState?: PreloadedStateShapeFromReducersMapObject<typeof rootReducer>;
@@ -23,6 +24,7 @@ async function render(
   ui: ReactElement | undefined,
   {
     initialRoute = "/",
+    routePath = "/",
     router: customRouter,
     queryClient: customQueryClient,
     preloadedState,
@@ -66,6 +68,7 @@ async function render(
     const { router, queryClient: routerQueryClient } = createTestRouter(
       ui,
       initialRoute,
+      routePath,
     );
 
     const Wrapper = () => (

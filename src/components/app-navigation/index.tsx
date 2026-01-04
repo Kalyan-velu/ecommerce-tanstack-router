@@ -1,10 +1,10 @@
 import {FavouriteIcon, ShoppingCart01FreeIcons,} from "@hugeicons/core-free-icons";
 import {HugeiconsIcon} from "@hugeicons/react";
 import {Link} from "@tanstack/react-router";
-import {type ChangeEvent, memo, useEffect, useMemo, useState} from "react";
+import {type ChangeEvent, memo, useEffect, useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 import {Label} from "@/components/ui/label.tsx";
-import {debounce} from "@/lib/utils.ts";
+import {useDebounce} from "@/hooks/use-debounce.tsx";
 import {searchChanged} from "@/store/features/filters.slice.ts";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {Input} from "../ui/input";
@@ -44,25 +44,21 @@ export const SearchBar = memo(() => {
   const dispatch = useAppDispatch();
   const searchTerm = useAppSelector(({ filters }) => filters.search);
   const [localValue, setLocalValue] = useState(searchTerm);
-  
-  const debounceSearch = useMemo(
-    () =>
-      debounce((value: string) => {
-        dispatch(searchChanged(value));
-      }, 50),
-    [dispatch],
-  );
-  
+  const debounceSearch = useDebounce((value: string) => {
+    dispatch(searchChanged(value));
+    return;
+  }, 50);
+
   useEffect(() => {
     setLocalValue(searchTerm);
   }, [searchTerm]);
-  
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setLocalValue(value); // ← Update immediately
     debounceSearch(value); // ← Debounce Redux
   };
-  
+
   return (
     <Label className="flex-1 max-w-md mx-8">
       <span className={"sr-only"}>Search Products</span>
