@@ -24,14 +24,14 @@ const router = createRouter({
  * This must run BEFORE React renders.
  */
 async function enableMocking(): Promise<void> {
-  if (__MSW_ENABLED__) return;
+  if (!__MSW_ENABLED__) return;
 
   const { worker } = await import("@/__mocks__/browser.ts");
   await worker.start({
     onUnhandledRequest: "error",
   });
 }
-
+console.log(__MSW_ENABLED__);
 /**
  * Renders the React application safely.
  */
