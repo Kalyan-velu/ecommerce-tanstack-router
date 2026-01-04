@@ -1,8 +1,8 @@
-import {fireEvent} from "@testing-library/dom";
-import {act} from "react";
-import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
-import {render, screen} from "@/test-utils";
-import {SearchBar} from "../";
+import { fireEvent } from "@testing-library/dom";
+import { act } from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen } from "@/test-utils";
+import { SearchBar } from "../";
 
 describe("SearchBar Component", () => {
   describe("Rendering", () => {

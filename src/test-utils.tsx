@@ -1,5 +1,9 @@
-import {combineReducers, configureStore, type PreloadedStateShapeFromReducersMapObject,} from "@reduxjs/toolkit";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {
+  combineReducers,
+  configureStore,
+  type PreloadedStateShapeFromReducersMapObject,
+} from "@reduxjs/toolkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   type AnyRouter,
   createMemoryHistory,
@@ -8,13 +12,16 @@ import {
   createRouter,
   RouterProvider,
 } from "@tanstack/react-router";
-import {render as rtlRender, type RenderOptions,} from "@testing-library/react";
+import {
+  type RenderOptions,
+  render as rtlRender,
+} from "@testing-library/react";
 
-import type {ReactElement, ReactNode} from "react";
+import type { ReactElement, ReactNode } from "react";
 
-import {Provider} from "react-redux";
-import {favoritesSlice} from "@/integrations/store/features/favorites.slice.ts";
-import {filtersSlice} from "@/store/features/filters.slice.ts";
+import { Provider } from "react-redux";
+import { favoritesSlice } from "@/integrations/store/features/favorites.slice.ts";
+import { filtersSlice } from "@/store/features/filters.slice.ts";
 
 export const rootReducer = combineReducers({
   [favoritesSlice.name]: favoritesSlice.reducer,

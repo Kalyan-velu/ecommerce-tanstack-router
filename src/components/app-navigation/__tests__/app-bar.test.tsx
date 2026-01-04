@@ -1,5 +1,5 @@
-import {describe, expect, it, vi} from "vitest";
-import {render, screen} from "@/test-utils";
+import { describe, expect, it, vi } from "vitest";
+import { render, screen } from "@/test-utils";
 import AppBar from "../";
 
 vi.mock("@tanstack/react-router", async () => {

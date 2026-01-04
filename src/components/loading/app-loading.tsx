@@ -1,4 +1,4 @@
-import {memo} from "react";
+import { memo } from "react";
 import ProductListSkeleton from "@/components/loading/product-list-skeleton.tsx";
 
 /**
@@ -34,4 +34,3 @@ export const AppLoading = memo(function AppLoading() {
     </div>
   );
 });
-

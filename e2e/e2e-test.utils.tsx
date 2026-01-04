@@ -1,11 +1,17 @@
-import type {PreloadedStateShapeFromReducersMapObject} from "@reduxjs/toolkit";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {type AnyRouter, RouterProvider} from "@tanstack/react-router";
-import type {ReactElement, ReactNode} from "react";
-import {Provider} from "react-redux";
-import {render as rtlRender, type RenderOptions} from "vitest-browser-react";
-import {createTestRouter, createTestStore, type rootReducer, type TestStore,} from "@/test-utils.tsx";
-import type {ArgumentsType} from "@/types";
+import type { PreloadedStateShapeFromReducersMapObject } from "@reduxjs/toolkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { type AnyRouter, RouterProvider } from "@tanstack/react-router";
+import type { ReactElement, ReactNode } from "react";
+import { Provider } from "react-redux";
+import { type RenderOptions, render as rtlRender } from "vitest-browser-react";
+
+import {
+  createTestRouter,
+  createTestStore,
+  type rootReducer,
+  type TestStore,
+} from "@/test-utils.tsx";
+import type { ArgumentsType } from "@/types";
 
 // Ensure React 19 knows this is a test environment
 // @ts-expect-error - IS_REACT_ACT_ENVIRONMENT is a global flag for React's act

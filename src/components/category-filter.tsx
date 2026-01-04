@@ -1,7 +1,7 @@
-import {memo} from "react";
-import {useAppDispatch} from "@/store/hooks";
-import {categorySelected} from "@/store/features/filters.slice.ts";
-import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
+import { memo } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
+import { categorySelected } from "@/store/features/filters.slice.ts";
+import { useAppDispatch } from "@/store/hooks";
 
 export const CategoryFilterTabs = memo<{
   category: string;

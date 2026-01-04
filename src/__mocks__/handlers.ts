@@ -1,6 +1,6 @@
-import {http, HttpResponse} from "msw";
-import {mockProducts} from "@/__mocks__/mock-product.ts";
-import {baseApiUrl} from "@/query/base-query.ts";
+import { HttpResponse, http } from "msw";
+import { mockProducts } from "@/__mocks__/mock-product.ts";
+import { baseApiUrl } from "@/query/base-query.ts";
 
 export const handlers = [
   http.get(`${baseApiUrl}/products`, () => {

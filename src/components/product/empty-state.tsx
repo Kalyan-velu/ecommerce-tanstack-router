@@ -1,7 +1,7 @@
-import {memo} from "react";
-import {Button} from "@/components/ui/button";
-import {resetFilters} from "@/store/features/filters.slice";
-import {useAppDispatch} from "@/store/hooks";
+import { memo } from "react";
+import { Button } from "@/components/ui/button";
+import { resetFilters } from "@/store/features/filters.slice";
+import { useAppDispatch } from "@/store/hooks";
 
 interface EmptyStateProps {
   hasFilters: boolean;
@@ -36,10 +36,16 @@ export const EmptyState = memo<EmptyStateProps>(({ hasFilters }) => {
         </svg>
       </div>
 
-      <h3 data-testid="empty-state-title" className="text-lg font-semibold text-gray-900 mb-2">
+      <h3
+        data-testid="empty-state-title"
+        className="text-lg font-semibold text-gray-900 mb-2"
+      >
         {hasFilters ? "No products found" : "No products available"}
       </h3>
-      <p data-testid="empty-state-description" className="text-gray-500 text-center max-w-md mb-6">
+      <p
+        data-testid="empty-state-description"
+        className="text-gray-500 text-center max-w-md mb-6"
+      >
         {hasFilters
           ? "No products match your current filters. Try adjusting your search term or selecting a different category."
           : "There are no products available at the moment. Please check back later."}

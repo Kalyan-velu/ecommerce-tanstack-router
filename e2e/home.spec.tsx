@@ -1,8 +1,8 @@
-import {describe, expect, it} from "vitest";
-import {page} from "vitest/browser";
-import {mockProducts} from "@/__mocks__/mock-product.ts";
-import {HomePage} from "@/routes";
-import {renderAct as renderApp} from "./e2e-test.utils.tsx";
+import { describe, expect, it } from "vitest";
+import { page } from "vitest/browser";
+import { mockProducts } from "@/__mocks__/mock-product.ts";
+import { HomePage } from "@/routes";
+import { renderAct as renderApp } from "./e2e-test.utils.tsx";
 
 describe("Product Listing Page - E2E", () => {
   describe("Page Load", () => {

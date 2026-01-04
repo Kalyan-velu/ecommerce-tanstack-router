@@ -1,7 +1,7 @@
-import {act} from "react";
-import {describe, expect, it} from "vitest";
-import {render} from "@/test-utils.tsx";
-import type {ArgumentsType} from "@/types";
+import { act } from "react";
+import { describe, expect, it } from "vitest";
+import { render } from "@/test-utils.tsx";
+import type { ArgumentsType } from "@/types";
 
 const { ProductViewPage } = await import("@/routes/$productId/index.tsx");
 

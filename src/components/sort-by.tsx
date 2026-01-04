@@ -1,7 +1,13 @@
-import {memo, useMemo} from "react";
-import {useAppDispatch} from "@/store/hooks";
-import {sorted} from "@/store/features/filters.slice.ts";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import { memo, useMemo } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
+import { sorted } from "@/store/features/filters.slice.ts";
+import { useAppDispatch } from "@/store/hooks";
 
 const labels: Record<
   "price-asc" | "price-desc" | (string & {}),
@@ -23,7 +29,11 @@ export const Sort = memo<{
   const memoized = useMemo(
     () =>
       Object.entries(labels).map(([value, label]) => (
-        <SelectItem data-testid={`sort-by-item-${value}`} key={value} value={value === "none" ? null : value}>
+        <SelectItem
+          data-testid={`sort-by-item-${value}`}
+          key={value}
+          value={value === "none" ? null : value}
+        >
           {label ?? "Default"}
         </SelectItem>
       )),

@@ -1,7 +1,7 @@
-import {act} from "react";
-import {describe, expect, it} from "vitest";
-import {mockProducts} from "@/__mocks__/mock-product.ts";
-import {render, screen} from "@/test-utils.tsx";
+import { act } from "react";
+import { describe, expect, it } from "vitest";
+import { mockProducts } from "@/__mocks__/mock-product.ts";
+import { render, screen } from "@/test-utils.tsx";
 
 const { FavouritesRoute } = await import("../favourites/index.tsx");
 
