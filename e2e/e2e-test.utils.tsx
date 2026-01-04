@@ -115,6 +115,7 @@ export const renderAct = async (
   return render(args[0], {
     withRouter: true,
     initialRoute: "/",
+    routePath: "/",
     ...(args[1] ?? {}),
   });
 };

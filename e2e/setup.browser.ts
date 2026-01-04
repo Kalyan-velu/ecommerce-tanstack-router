@@ -1,8 +1,8 @@
-import { afterAll, afterEach, beforeEach } from "vitest";
+import { afterAll, afterEach, beforeAll } from "vitest";
 import { cleanup } from "vitest-browser-react";
 import { worker } from "@/__mocks__/browser";
 
-beforeEach(() => {
+beforeAll(() => {
   worker.start();
 });
 afterEach(async () => {

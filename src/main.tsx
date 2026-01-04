@@ -19,10 +19,34 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
 });
 
-// Render the app
-const rootElement = document.getElementById("app");
-if (rootElement && !rootElement.innerHTML) {
+/**
+ * Bootstraps MSW in browser environments when enabled.
+ * This must run BEFORE React renders.
+ */
+async function enableMocking(): Promise<void> {
+  if (__MSW_ENABLED__) return;
+
+  const { worker } = await import("@/__mocks__/browser.ts");
+  await worker.start({
+    onUnhandledRequest: "error",
+  });
+}
+
+/**
+ * Renders the React application safely.
+ */
+function renderApp(): void {
+  const rootElement = document.getElementById("app");
+
+  if (!rootElement) {
+    throw new Error("Root element #app not found");
+  }
+
+  // Prevent double-mounting (Vitest UI / HMR safety)
+  if (rootElement.innerHTML) return;
+
   const root = ReactDOM.createRoot(rootElement);
+
   root.render(
     <StrictMode>
       <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
@@ -31,6 +55,9 @@ if (rootElement && !rootElement.innerHTML) {
     </StrictMode>,
   );
 }
+
+await enableMocking();
+renderApp();
 
 reportWebVitals();
 

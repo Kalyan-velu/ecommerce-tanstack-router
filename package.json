@@ -11,7 +11,7 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:e2e": "vitest run --config vitest.config.browser.ts --browser.headless",
-    "test:e2e:ui": "vitest --config vitest.config.browser.ts",
+    "test:e2e:ui": "vitest --config vitest.config.browser.ts --ui",
     "test:coverage": "vitest run --coverage",
     "format": "biome format --write",
     "lint": "biome lint --write",

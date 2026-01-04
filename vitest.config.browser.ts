@@ -4,6 +4,7 @@ import {playwright} from "@vitest/browser-playwright";
 import viteConfig from "./vite.config.ts";
 
 export default mergeConfig(viteConfig,defineConfig({
+
   test: {
     setupFiles: ["./e2e/setup.browser.ts"],
     browser: {
