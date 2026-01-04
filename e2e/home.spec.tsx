@@ -127,7 +127,7 @@ describe("Product Listing Page - E2E", () => {
 
   describe("Search Functionality", () => {
     it("should show empty state when no products match search", async () => {
-      const { store } = await renderApp(<HomePage />, {
+      const { getByTestId } = await renderApp(<HomePage />, {
         preloadedState: {
           favorites: { favourites: [] },
           filters: {
@@ -137,15 +137,8 @@ describe("Product Listing Page - E2E", () => {
           },
         },
       });
-      // Pre-set search filter to show empty state
-      store.dispatch({
-        type: "filters/searchChanged",
-        payload: "nonexistentproduct12345",
-      });
-
-      // Wait for empty state to appear
-      const emptyState = page.getByText("0 products");
-      await expect.element(emptyState).toBeVisible();
+      const title = getByTestId("empty-state-title");
+      expect(title).toHaveTextContent("No products found");
     });
   });
 
