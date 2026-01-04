@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
 interface FiltersState {
   category: string;
@@ -6,7 +6,7 @@ interface FiltersState {
   search: string;
 }
 
-const initialState: FiltersState = {
+export const initialFilterState: FiltersState = {
   category: "all",
   sort: null,
   search: "",
@@ -14,7 +14,7 @@ const initialState: FiltersState = {
 
 export const filtersSlice = createSlice({
   name: "filters",
-  initialState,
+  initialState: initialFilterState,
   reducers: {
     categorySelected: (state, action: PayloadAction<string>) => {
       state.category = action.payload;
@@ -35,10 +35,10 @@ export const filtersSlice = createSlice({
       const attribute = action.payload;
       for (const attr of attribute) {
         // @ts-expect-error - TS doesn't know that attr is a key of FiltersState'
-        state[attr] = initialState[attr];
+        state[attr] = initialFilterState[attr];
       }
     },
-    resetFilters: () => initialState,
+    resetFilters: () => initialFilterState,
   },
 });
 

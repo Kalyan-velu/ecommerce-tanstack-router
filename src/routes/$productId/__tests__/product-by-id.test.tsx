@@ -1,69 +1,28 @@
-import type { ReactNode } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { mockProducts } from "@/__mocks__/mock-product.ts";
-import { render } from "@/test-utils.tsx";
+import {describe, expect, it} from "vitest";
+import {render} from "@/test-utils.tsx";
+import {act} from "react";
 
-// Use vi.hoisted to properly hoist the mock function before vi.mock runs
-const { mockUseParams } = vi.hoisted(() => ({
-  mockUseParams: vi.fn(),
-}));
+type ArgumentsType<T> = T extends (...args: infer P) => any ? P : never;
 
-// Mock TanStack Router's Link component to avoid RouterProvider requirement
-vi.mock("@tanstack/react-router", async () => {
-  const actual = await vi.importActual("@tanstack/react-router");
-  return {
-    ...actual,
-    useParams: mockUseParams,
-    Link: ({
-      children,
-      to,
-      ...props
-    }: {
-      children: ReactNode;
-      to: string;
-      [key: string]: unknown;
-    }) => (
-      <a href={to} {...props}>
-        {children}
-      </a>
-    ),
-  };
-});
-
-// Mock useGetProductById - fix type mismatch by converting id to number
-vi.mock("@/query/hooks/use-get-product-by-id.tsx", () => ({
-  useSuspenseGetProductById: (id: string | number) => ({
-    data: {
-      data: mockProducts.find((product) => product.id === Number(id)) ?? null,
-    },
-  }),
-}));
-
-vi.mock("react", async () => {
-  const actual = await vi.importActual("react");
-  return {
-    ...actual,
-    Activity: ({ children, mode }: { children: ReactNode; mode: string }) => (
-      <div data-testid="activity" data-mode={mode}>
-        {mode === "visible" ? children : null}
-      </div>
-    ),
-  };
-});
 
 const { ProductViewPage } = await import("@/routes/$productId/index.tsx");
 
+const renderPage=async(...args:Partial<ArgumentsType<typeof render>>)=> {
+  return act(()=>{
+      return render(args[0]??<ProductViewPage />,{
+        withRouter: true,
+        initialRoute: "/product/1",
+        ...(args[1]??{})
+      })
+    }
+  )
+}
+
 describe("Product View Page", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    // Default to electronics product (id: 1)
-    mockUseParams.mockReturnValue({ productId: "1" });
-  });
 
   describe("Product Details", () => {
-    it("should render product details for electronics product", () => {
-      mockUseParams.mockReturnValue({ productId: "1" });
-      const { getByTestId } = render(<ProductViewPage />);
+    it("should render product details for electronics product",async () => {
+      const { getByTestId } = await renderPage();
 
       expect(getByTestId("product-category")).toBeInTheDocument();
       expect(getByTestId("product-title")).toBeInTheDocument();
@@ -73,51 +32,55 @@ describe("Product View Page", () => {
       expect(getByTestId("reviews-container")).toBeInTheDocument();
     });
 
-    it("should NOT show sizes section for non-clothing products", () => {
-      // Use electronics product (id: 1)
-      mockUseParams.mockReturnValue({ productId: "1" });
-      const { queryByTestId } = render(<ProductViewPage />);
+    it("should NOT show sizes section for non-clothing products", async() => {
+      const { queryByTestId } = await renderPage();
 
       // Sizes should not be visible for electronics
       expect(queryByTestId("sizes")).not.toBeInTheDocument();
     });
 
-    it("should show sizes section for clothing products", () => {
+    it("should show sizes section for clothing products", async() => {
       // Use clothing product (id: 3 - Winter Jacket, men's clothing)
-      mockUseParams.mockReturnValue({ productId: "3" });
-      const { getByTestId } = render(<ProductViewPage />);
+      const { getByTestId } = await renderPage(undefined,{
+        withRouter: true,
+        initialRoute: "/product/3"
+      });
 
       // Sizes should be visible for clothing
       expect(getByTestId("sizes")).toBeInTheDocument();
     });
 
-    it("should display correct product category", () => {
-      mockUseParams.mockReturnValue({ productId: "1" });
-      const { getByTestId } = render(<ProductViewPage />);
+    it("should display correct product category", async () => {
+      // mockUseParams.mockReturnValue({ productId: "1" });
+      const { getByTestId } = await renderPage(undefined,{
+        initialRoute: "/product/1"
+      });
 
       expect(getByTestId("product-category")).toHaveTextContent("electronics");
     });
 
-    it("should display correct product title", () => {
-      mockUseParams.mockReturnValue({ productId: "1" });
-      const { getByTestId } = render(<ProductViewPage />);
+    it("should display correct product title", async() => {
+      const { getByTestId } = await renderPage(undefined,{
+        initialRoute: "/product/1"
+      });
 
       expect(getByTestId("product-title")).toHaveTextContent(
         "Smartphone Pro Max",
       );
     });
 
-    it("should display formatted price", () => {
-      mockUseParams.mockReturnValue({ productId: "1" });
-      const { getByTestId } = render(<ProductViewPage />);
-
+    it("should display formatted price", async() => {
+      const { getByTestId } = await renderPage(undefined,{
+        initialRoute: "/product/1"
+      });
+      
       expect(getByTestId("product-price")).toHaveTextContent("$999.99");
     });
   });
 
   describe("Back Navigation", () => {
-    it("should render back to products link", () => {
-      const { getByRole } = render(<ProductViewPage />);
+    it("should render back to products link", async() => {
+      const { getByRole } = await renderPage();
 
       const backLink = getByRole("link", { name: /back to products/i });
       expect(backLink).toBeInTheDocument();

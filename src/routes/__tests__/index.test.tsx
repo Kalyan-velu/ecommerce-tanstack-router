@@ -1,7 +1,7 @@
 import userEvent from "@testing-library/user-event";
 import {beforeEach, describe, expect, it, vi} from "vitest";
 import {render, screen, waitFor} from "@/test-utils";
-import {mockProducts} from "@/__mocks__/mock-product.ts";
+import type {ReactNode} from "react";
 
 // Mock TanStack Router's Link component to avoid RouterProvider requirement
 vi.mock("@tanstack/react-router", async () => {
@@ -13,7 +13,7 @@ vi.mock("@tanstack/react-router", async () => {
       to,
       ...props
     }: {
-      children: React.ReactNode;
+      children: ReactNode;
       to: string;
       [key: string]: unknown;
     }) => (
@@ -24,24 +24,16 @@ vi.mock("@tanstack/react-router", async () => {
   };
 });
 
-vi.mock("@/query/hooks/use-get-all-products.tsx", () => ({
-  useSuspenseGetAllProducts: () => ({
-    data: {
-      data: mockProducts,
-    },
-  }),
-}));
-
 
 vi.mock("react", async () => {
   const actual = await vi.importActual("react");
   return {
     ...actual,
     Activity: ({
-      children,
-      mode,
-    }: {
-      children: React.ReactNode;
+                 children,
+                 mode,
+               }: {
+      children: ReactNode;
       mode: string;
     }) => (
       <div data-testid="activity" data-mode={mode}>

@@ -1,14 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Activity, useDeferredValue, useMemo } from "react";
-import { CategoryFilterTabs } from "@/components/category-filter.tsx";
-import { AppLoading } from "@/components/loading/app-loading.tsx";
-import { EmptyState } from "@/components/product/empty-state.tsx";
-import { ProductsList } from "@/components/product/products-list.tsx";
-import { Sort } from "@/components/sort-by.tsx";
-import { useSuspenseGetAllProducts } from "@/query/hooks/use-get-all-products.tsx";
-import { getProductsQueryOptions } from "@/query/options/production.options.ts";
-import { getContext } from "@/query/root-provider.tsx";
-import { useAppSelector } from "@/store/hooks";
+import {createFileRoute} from "@tanstack/react-router";
+import {Activity, useDeferredValue, useMemo} from "react";
+import {CategoryFilterTabs} from "@/components/category-filter.tsx";
+import {AppLoading} from "@/components/loading/app-loading.tsx";
+import {EmptyState} from "@/components/product/empty-state.tsx";
+import {ProductsList} from "@/components/product/products-list.tsx";
+import {Sort} from "@/components/sort-by.tsx";
+import {useSuspenseGetAllProducts} from "@/query/hooks/use-get-all-products.tsx";
+import {getProductsQueryOptions} from "@/query/options/production.options.ts";
+import {getContext} from "@/query/root-provider.tsx";
+import {useAppSelector} from "@/store/hooks";
 
 const queryClient = getContext().queryClient;
 
@@ -74,7 +74,9 @@ export function App() {
       </div>
 
       <div className="flex items-center justify-between mb-6 px-2">
-        <p className="text-gray-600">{productCount} products</p>
+        <p data-testid={"product-count"} className="text-gray-600">
+          {productCount} products
+        </p>
         <Sort sortBy={sorted} />
       </div>
       <Activity mode={productCount === 0 ? "hidden" : "visible"}>

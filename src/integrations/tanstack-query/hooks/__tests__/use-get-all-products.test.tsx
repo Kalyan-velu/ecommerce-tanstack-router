@@ -30,6 +30,9 @@ describe("getProducts", () => {
     });
 
     expect(result.current.data?.data.length).toBe(5);
+    expect(result.current.data?.data[0].id).toBeDefined();
+    expect(result.current.data?.data[0].title).toBeDefined();
+    expect(result.current.data?.data[0].price).toBeDefined();
   });
   it("should return a product with id 1", async () => {
     const { result } = renderHook(() => useGetProductById(1), {

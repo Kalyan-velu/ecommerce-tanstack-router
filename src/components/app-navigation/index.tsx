@@ -1,16 +1,13 @@
-import {
-  FavouriteIcon,
-  ShoppingCart01FreeIcons,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Link } from "@tanstack/react-router";
-import { type ChangeEvent, memo, useMemo } from "react";
-import { Button } from "@/components/ui/button.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { debounce } from "@/lib/utils.ts";
-import { searchChanged } from "@/store/features/filters.slice.ts";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Input } from "../ui/input";
+import {FavouriteIcon, ShoppingCart01FreeIcons,} from "@hugeicons/core-free-icons";
+import {HugeiconsIcon} from "@hugeicons/react";
+import {Link} from "@tanstack/react-router";
+import {type ChangeEvent, memo, useEffect, useMemo, useState} from "react";
+import {Button} from "@/components/ui/button.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {debounce} from "@/lib/utils.ts";
+import {searchChanged} from "@/store/features/filters.slice.ts";
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import {Input} from "../ui/input";
 
 export default memo(function AppNavigation() {
   return (
@@ -43,10 +40,11 @@ export default memo(function AppNavigation() {
   );
 });
 
-const SearchBar = memo(() => {
+export const SearchBar = memo(() => {
   const dispatch = useAppDispatch();
   const searchTerm = useAppSelector(({ filters }) => filters.search);
-
+  const [localValue, setLocalValue] = useState(searchTerm);
+  
   const debounceSearch = useMemo(
     () =>
       debounce((value: string) => {
@@ -54,18 +52,24 @@ const SearchBar = memo(() => {
       }, 50),
     [dispatch],
   );
-
+  
+  useEffect(() => {
+    setLocalValue(searchTerm);
+  }, [searchTerm]);
+  
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    debounceSearch(e.target.value);
+    const value = e.target.value;
+    setLocalValue(value); // ← Update immediately
+    debounceSearch(value); // ← Debounce Redux
   };
-
+  
   return (
     <Label className="flex-1 max-w-md mx-8">
       <span className={"sr-only"}>Search Products</span>
       <Input
         placeholder="Search products..."
         className="w-full"
-        value={searchTerm}
+        value={localValue} // ← Use local state
         onChange={handleChange}
       />
     </Label>

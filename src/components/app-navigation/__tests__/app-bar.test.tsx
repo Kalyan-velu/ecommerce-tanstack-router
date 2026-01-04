@@ -1,8 +1,7 @@
-import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@/test-utils";
+import {describe, expect, it, vi} from "vitest";
+import {render, screen} from "@/test-utils";
 import AppBar from "../";
 
-// Mock TanStack Router's Link component to avoid RouterProvider requirement
 vi.mock("@tanstack/react-router", async () => {
   const actual = await vi.importActual("@tanstack/react-router");
   return {

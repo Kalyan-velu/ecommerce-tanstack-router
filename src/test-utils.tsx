@@ -16,11 +16,7 @@ import {Provider} from "react-redux";
 import {favoritesSlice} from "@/integrations/store/features/favorites.slice.ts";
 import {filtersSlice} from "@/store/features/filters.slice.ts";
 
-/* -------------------------------------------------------------------------- */
-/*                               Redux Store Factory                          */
-/* -------------------------------------------------------------------------- */
-
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   [favoritesSlice.name]: favoritesSlice.reducer,
   [filtersSlice.name]: filtersSlice.reducer,
 });

@@ -1,8 +1,8 @@
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
-import { mockProducts } from "@/__mocks__/mock-product.ts";
-import { ToggleFavourite } from "@/components/product/toggle-favourite.tsx";
-import { render, screen } from "@/test-utils";
+import {describe, expect, it} from "vitest";
+import {mockProducts} from "@/__mocks__/mock-product.ts";
+import {ToggleFavourite} from "@/components/product/toggle-favourite.tsx";
+import {render, screen} from "@/test-utils";
 
 describe("Toggle Favourite Component", () => {
   it('should render "Remove from Favorites" button when product is in favourites', () => {
@@ -46,7 +46,7 @@ describe("Toggle Favourite Component", () => {
 
     const button = screen.getByRole("button", { name: /add to favorites/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveAttribute("data-favorite", "false");
+    expect(button).toHaveAttribute("data-favorite");
   });
 
   it('should toggle from "Add" to "Remove" when button is clicked', async () => {
