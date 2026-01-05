@@ -1,6 +1,6 @@
-import { memo } from "react";
-import { ProductCard } from "@/components/product/product-card.tsx";
-import type { ProductInterface } from "@/types/product.type.ts";
+import { ProductCard } from "@/components/product/product-card.tsx"
+import type { ProductInterface } from "@/types/product.type.ts"
+import { memo } from "react"
 
 interface ProductsListProps {
   products: ProductInterface[];
@@ -8,7 +8,7 @@ interface ProductsListProps {
 
 export const ProductsList = memo<ProductsListProps>(({ products }) => {
   return (
-    <div className="columns-1 sm:columns-3 md:columns-3 lg:columns-3 xl:columns-4 gap-4 lg:gap-6 px-2">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-4 pb-8 items-stretch">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

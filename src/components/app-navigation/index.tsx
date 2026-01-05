@@ -1,15 +1,15 @@
-import {
-  FavouriteIcon,
-  ShoppingCart01FreeIcons,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Link } from "@tanstack/react-router";
-import { type ChangeEvent, memo, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { useDebounce } from "@/hooks/use-debounce.tsx";
 import { searchChanged } from "@/store/features/filters.slice.ts";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+    FavouriteIcon,
+    ShoppingCart01FreeIcons,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Link } from "@tanstack/react-router";
+import { memo, useEffect, useState, type ChangeEvent } from "react";
 import { Input } from "../ui/input";
 
 export default memo(function AppNavigation() {
@@ -21,8 +21,8 @@ export default memo(function AppNavigation() {
         </Link>
 
         <SearchBar />
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon-lg">
+        <nav className="flex items-center gap-2">
+          <Button variant="ghost" size="icon-lg" aria-label="View Cart">
             <HugeiconsIcon
               icon={ShoppingCart01FreeIcons}
               className={"size-6"}
@@ -34,10 +34,11 @@ export default memo(function AppNavigation() {
             size="icon-lg"
             render={<Link to="/favourites" />}
             nativeButton={false}
+            aria-label="View Favorites"
           >
             <HugeiconsIcon icon={FavouriteIcon} className={"size-6"} />
           </Button>
-        </div>
+        </nav>
       </div>
     </header>
   );
