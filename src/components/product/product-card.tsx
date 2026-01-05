@@ -1,13 +1,13 @@
-import { ToggleFavourite } from "@/components/product/toggle-favourite.tsx"
-import type { ProductInterface } from "@/types/product.type.ts"
 import {
   FavouriteIcon,
   ShoppingBag01Icon,
   ViewIcon,
-} from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Link } from "@tanstack/react-router"
-import { memo, type FC } from "react"
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Link } from "@tanstack/react-router";
+import { type FC, memo } from "react";
+import { ToggleFavourite } from "@/components/product/toggle-favourite.tsx";
+import type { ProductInterface } from "@/types/product.type.ts";
 
 interface ProductCardProps {
   product: ProductInterface;
@@ -32,9 +32,9 @@ export const ProductCard: FC<ProductCardProps> = memo(({ product }) => {
             className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 ease-in-out group-hover:scale-110"
           />
         </Link>
-        
+
         <div className="absolute top-3 left-3">
-           <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-background/80 backdrop-blur-md text-foreground border border-border/50 shadow-sm capitalize">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-background/80 backdrop-blur-md text-foreground border border-border/50 shadow-sm capitalize">
             {product.category}
           </span>
         </div>
@@ -44,24 +44,28 @@ export const ProductCard: FC<ProductCardProps> = memo(({ product }) => {
             product={product}
             props={{
               "aria-label": `Add ${product.title} to favorites`,
-              className: "h-9 w-9 p-0 rounded-full inline-flex items-center justify-center bg-background/80 backdrop-blur-md hover:bg-background border border-border/50 text-foreground shadow-sm transition-colors",
+              className:
+                "h-9 w-9 p-0 rounded-full inline-flex items-center justify-center bg-background/80 backdrop-blur-md hover:bg-background border border-border/50 text-foreground shadow-sm transition-colors",
             }}
           >
-             <HugeiconsIcon icon={FavouriteIcon} className="h-5 w-5 text-muted-foreground group-data-[favorite=true]/toggle:fill-red-500 group-data-[favorite=true]/toggle:text-red-500 transition-colors" />
+            <HugeiconsIcon
+              icon={FavouriteIcon}
+              className="h-5 w-5 text-muted-foreground group-data-[favorite=true]/toggle:fill-red-500 group-data-[favorite=true]/toggle:text-red-500 transition-colors"
+            />
           </ToggleFavourite>
         </div>
 
         <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 flex gap-2 justify-center pb-6 bg-gradient-to-t from-black/5 to-transparent">
-             <Link
-                to="/$productId"
-                params={{ productId: String(product.id) }}
-                className="w-full"
-              >
-                  <span className="w-full bg-primary text-primary-foreground font-medium py-2.5 px-4 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors active:scale-95">
-                      <HugeiconsIcon icon={ViewIcon} className="w-4 h-4" />
-                      Quick View
-                  </span>
-             </Link>
+          <Link
+            to="/$productId"
+            params={{ productId: String(product.id) }}
+            className="w-full"
+          >
+            <span className="w-full bg-primary text-primary-foreground font-medium py-2.5 px-4 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors active:scale-95">
+              <HugeiconsIcon icon={ViewIcon} className="w-4 h-4" />
+              Quick View
+            </span>
+          </Link>
         </div>
       </div>
 
@@ -72,7 +76,10 @@ export const ProductCard: FC<ProductCardProps> = memo(({ product }) => {
             params={{ productId: String(product.id) }}
             className="block group-hover:text-primary transition-colors"
           >
-            <h2 className="font-bold text-base leading-tight text-foreground line-clamp-1" title={product.title}>
+            <h2
+              className="font-bold text-base leading-tight text-foreground line-clamp-1"
+              title={product.title}
+            >
               {product.title}
             </h2>
           </Link>
@@ -83,13 +90,15 @@ export const ProductCard: FC<ProductCardProps> = memo(({ product }) => {
 
         <div className="mt-auto pt-3 flex text-left items-center justify-between border-t border-dashed border-border/60">
           <div className="flex flex-col">
-             <span className="text-xs text-muted-foreground font-medium">Price</span>
-             <span className="text-lg font-bold text-foreground tracking-tight">
-                ${product.price.toFixed(2)}
-             </span>
+            <span className="text-xs text-muted-foreground font-medium">
+              Price
+            </span>
+            <span className="text-lg font-bold text-foreground tracking-tight">
+              ${product.price.toFixed(2)}
+            </span>
           </div>
-          
-          <button 
+
+          <button
             type="button"
             className="h-10 w-10 flex items-center justify-center rounded-full bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-sm hover:shadow-md active:scale-95"
             aria-label="Add to cart"

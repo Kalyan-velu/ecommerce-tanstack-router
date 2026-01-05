@@ -1,14 +1,32 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "type": "npm",
-            "script": "dev",
-            "label": "npm: dev",
-            "presentation": {
-                "group": "watch",
-                "reveal": "never"
-            }
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "dev",
+      "label": "npm: dev",
+      "presentation": {
+        "group": "watch",
+        "reveal": "never"
+      }
+    },
+    {
+      "type": "npm",
+      "script": "format",
+      "label": "npm: format",
+      "presentation": {
+        "group": "watch",
+        "reveal": "never"
+      }
+    },
+    {
+      "type": "npm",
+      "script": "biome:ci",
+      "label": "npm: biome:ci",
+      "presentation": {
+        "group": "watch",
+        "reveal": "never"
+      }
+    }
+  ]
 }

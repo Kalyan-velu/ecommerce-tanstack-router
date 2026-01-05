@@ -1,6 +1,6 @@
-import { ProductCard } from "@/components/product/product-card.tsx"
-import type { ProductInterface } from "@/types/product.type.ts"
-import { memo } from "react"
+import { memo } from "react";
+import { ProductCard } from "@/components/product/product-card.tsx";
+import type { ProductInterface } from "@/types/product.type.ts";
 
 interface ProductsListProps {
   products: ProductInterface[];

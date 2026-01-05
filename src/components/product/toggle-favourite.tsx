@@ -1,17 +1,17 @@
-import { Button, type buttonVariants } from "@/components/ui/button.tsx"
-import { cn } from "@/lib/utils.ts"
-import { toggledFavorite } from "@/store/features/favorites.slice.ts"
-import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import type { ProductInterface } from "@/types/product.type.ts"
-import type { ButtonProps } from "@base-ui/react"
-import { FavouriteIcon } from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
-import type { VariantProps } from "class-variance-authority"
+import type { ButtonProps } from "@base-ui/react";
+import { FavouriteIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import type { VariantProps } from "class-variance-authority";
 import React, {
   createElement,
   type HTMLAttributes,
   type ReactElement,
-} from "react"
+} from "react";
+import { Button, type buttonVariants } from "@/components/ui/button.tsx";
+import { cn } from "@/lib/utils.ts";
+import { toggledFavorite } from "@/store/features/favorites.slice.ts";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import type { ProductInterface } from "@/types/product.type.ts";
 
 interface BaseProps {
   product: ProductInterface;
@@ -54,7 +54,10 @@ export const ToggleFavourite = ({
         onClick: handleToggleFavorite,
         "data-favorite": isFavorite,
         ...props,
-        className: cn("focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary group/toggle", props?.className),
+        className: cn(
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary group/toggle",
+          props?.className,
+        ),
       },
       children,
     );
